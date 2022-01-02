@@ -1,0 +1,15 @@
+module.exports = {
+  user: 'user',
+  item: 'item',
+  item_type: 'item_type',
+  item_info: 'item_info',
+  item_image: 'item_image',
+  location: 'location',
+  related_item: 'related_item',
+  size: 'size',
+  shape: 'shape',
+  company: 'company',
+  address: 'address',
+  state: 'state',
+  country: 'country',
+};
