@@ -1,3 +1,4 @@
+const Knex = require('knex');
 const tableNames = require('../../src/constants/tableNames');
 const {
   addDefaultColumns,
@@ -8,7 +9,7 @@ const {
 } = require('../../src/utils/tableUtils');
 
 /**
- * @param {import('knex')} knex
+ * @param {Knex} knex
  */
 exports.up = async (knex) => {
   await Promise.all([
@@ -68,7 +69,6 @@ exports.down = async (knex) => {
       tableNames.state,
       tableNames.shape,
       tableNames.location,
-      // eslint-disable-next-line comma-dangle
     ].map((tablename) => knex.schema.dropTable(tablename))
   );
 };

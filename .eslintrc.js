@@ -8,6 +8,8 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 13,
   },
-  rules: {},
+  rules: {
+    commaDangle: false,
+  },
   extends: ['airbnb-base'],
 };
