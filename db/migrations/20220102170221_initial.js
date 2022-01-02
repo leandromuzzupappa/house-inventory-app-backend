@@ -1,35 +1,15 @@
 const tableNames = require('../../src/constants/tableNames');
+const {
+  addDefaultColumns,
+  createNameTable,
+  url,
+  email,
+  references,
+} = require('../../src/utils/tableUtils');
 
-function addDefaultColumns(table) {
-  table.timestamps(false, true);
-  table.datetime('deleted_at');
-}
-
-// se podria deshabilitar agregando una regla buuut elijo no hacerlo :P
-// eslint-disable-next-line camelcase
-function createNameTable(knex, table_name) {
-  return knex.schema.createTable(table_name, (table) => {
-    table.increments().notNullable();
-    table.string('name', 254).notNullable().unique();
-    addDefaultColumns(table);
-  });
-}
-
-function url(table, columName) {
-  table.string(columName, 2000);
-}
-function email(table, columnName) {
-  return table.string(columnName, 254);
-}
-
-function references(table, tableName) {
-  table
-    .integer(`${tableName}_id`)
-    .unsigned()
-    .references('id')
-    .inTable(tableName);
-}
-
+/**
+ * @param {import('knex')} knex
+ */
 exports.up = async (knex) => {
   await Promise.all([
     knex.schema.createTable(tableNames.user, (table) => {
@@ -61,10 +41,6 @@ exports.up = async (knex) => {
     table.string('zipcode', 15).notNullable();
     table.float('longitude').notNullable();
     table.float('latitude').notNullable();
-    table.integer('state_id').unsigned();
-    table.foreign('state_id').references('id').inTable('state');
-    table.integer('country_id').unsigned();
-    table.foreign('country_id').references('id').inTable('country');
     references(table, 'state');
     references(table, 'country');
   });
@@ -82,12 +58,17 @@ exports.up = async (knex) => {
 };
 
 exports.down = async (knex) => {
-  await Promise.all([
-    tableNames.user,
-    tableNames.item_type,
-    tableNames.country,
-    tableNames.state,
-    tableNames.shape,
-    tableNames.location,
-  ]).map((tablename) => knex.schema.dropTable(tablename));
+  await Promise.all(
+    [
+      tableNames.company,
+      tableNames.address,
+      tableNames.user,
+      tableNames.item_type,
+      tableNames.country,
+      tableNames.state,
+      tableNames.shape,
+      tableNames.location,
+      // eslint-disable-next-line comma-dangle
+    ].map((tablename) => knex.schema.dropTable(tablename))
+  );
 };
